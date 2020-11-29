@@ -2,91 +2,111 @@
 
 
 
-Requirements :
-
-1.) Python 3.5 +
-2.) Scikit-Learn (latest version)
-3.) Numpy (+ mkl for Windows)
-4.) Matplotlib
-
-
-Usage :
-
-1. Download the four MNIST dataset files from this link:
-   http://yann.lecun.com/exdb/mnist/
-   
- 2. Unzip and place the files in the dataset folder inside the MNIST_Dataset_Loader folder under each ML Algorithm folder i.e:
-      KNN
-|_ MNIST_Dataset_Loader
-   |_ dataset
-      |_ train-images-idx3-ubyte
-      |_ train-labels-idx1-ubyte
-      |_ t10k-images-idx3-ubyte
-      |_ t10k-labels-idx1-ubyte
-      
-      
-      Do this for SVM and RFC folders and you should be good to go.
- 
-  3. To run the code, navigate to one of the directories for which you want to run the code using command prompt:
-   cd 1. K Nearest Neighbors/
-   
-   and then run the file "knn.py" as follows:
-     python knn.py
-     
-    This will run the code and all the print statements will be logged into the "summary.log" file.
-
-NOTE: If you want to see the output to print on the Command prompt, just comment out line 16, 17, 18, 106 and 107 and hence you will get all the prints on the screen.
-
-Alternatively, you can also use PyCharm to run the code and run the ".py" file in there.
-
-Repeat the steps for SVM and RFC code.
+## Table of Content
+  * [Overview](#overview)
+  * [Motivation](#motivation)
+  * [Technical Aspect](#technical-aspect)
+  * [Installation](#installation)
+  * [Run](#run)
+  * [Deployement on Heroku](#deployement-on-heroku)
+  * [Directory Tree](#directory-tree)
+  * [To Do](#to-do)
+  * [Bug / Feature Request](#bug---feature-request)
+  * [Technologies Used](#technologies-used)
+  * [Team](#team)
+  * [License](#license)
+  * [Credits](#credits)
 
 
-4. To run the CNN code, you don't need to provide in the MNIST dataset as it'll be downloaded automatically.
+## Overview
+Handwritten Digit Recognition using OpenCV, sklearn and Python
 
-Just run the file as :
+## Motivation
+What could be a perfect way to utilize unfortunate lockdown period? Like most of you, I spend my time in cooking, Netflix, coding and reading some latest research papers on weekends. The idea of classifying indian currency struck to me when I was browsing through some research papers. I couldn't find any relevant research paper (and of course dataset!) associated with it. And that led me to collect the images of Indian currency to train a deep learning model using [this](https://github.com/hardikvasa/google-images-download) amazing tool.
+## Technical Aspect
+This repository contains the following files-
 
-python CNN_MNIST.py
+1. `generateClassifier.py` - Python Script to create the classifier file `digits_cls.pkl`.
+2. `performRecognition.py` - Python Script to test the classifier.
 
-or
+```python
+python generateClassifier.py
+```
+* To test the classifier, run the `performRecognition.py` script.
+```python
+python performRecognition.py -c <path to classifier file> -i <path to test image>
+```
+ex -
+```python
+python performRecognition.py -c digits_cls.pkl -i photo_1.jpg
+```
 
-python3 CNN_MNIST.py
-
-5. If you want to save the CNN model weights after training, run the code with the following arguments:
-
-python CNN_MNIST.py --save_model 1 --save_weights cnn_weights.hdf5
-or
-
-python3 CNN_MNIST.py --save_model 1 --save_weights cnn_weights.hdf5
-
-
-6. To load the saved model weights and avoid the training time again, use the following command:
-
-python CNN_MNIST.py --load_model 1 --save_weights cnn_weights.hdf5
-or
-
-python3 CNN_MNIST.py --load_model 1 --save_weights cnn_weights.hdf5
-and it should load the model and show the Outputs.
-
-
-Accuracy using Machine Learning Algorithms:
-
-i) K Nearest Neighbors: 96.67%
-
-ii) SVM: 97.91%
-
-iii) Random Forest Classifier: 96.82%
+## Installation
+The Code is written in Anaconda 3.7. If you don't have Python installed you can find it [here](https://www.conda.org/downloads/). If you are using a lower version of Python you can upgrade using the pip package, ensuring you have the latest version of pip. To install the required packages and libraries, run this command in the project directory after [cloning](https://www.howtogeek.com/451360/how-to-clone-a-github-repository/) the repository:
+```bash
+conda install -r requirements.txt
 
 
-Accuracy using Deep Neural Networks:
-i) Three Layer Convolutional Neural Network using Tensorflow: 99.70%
+## Run
+> STEP 1
+#### Linux and macOS User
+Open `.bashrc` or `.zshrc` file and add the following credentials:
+```bash
+export AWS_ACCESS_KEY="your_aws_access_key"
+export AWS_SECRET_KEY="your_aws_secret_key"
+export ICP_BUCKET='your_aws_bucket_name'
+export ICP_BUCKET_REGION='bucket_region'
+export ICP_UPLOAD_DIR='bucket_path_to_save_images'
+export ICP_PRED_DIR='bucket_path_to_save_predictions'
+export ICP_FLASK_SECRET_KEY='anything_random_but_unique'
+export SENTRY_INIT='URL_given_by_sentry'
+```
+Note: __SENTRY_INIT__ is optional, only if you want to catch exceptions in the app, else comment/remove the dependencies and code associated with sentry in `app/main.py`
 
-ii) Three Layer Convolutional Neural Network using Keras and Theano: 98.75%
+#### Windows User
+Since, I don't have a system with Windows OS, here I collected some helpful resource on adding User Environment Variables in Windows.
 
-All code written in Python 3.5. Code executed on Intel Xeon Processor / AWS EC2 Server.
+__Attention__: Please perform the steps given in these tutorials at your own risk. Please don't mess up with the System Variables. It can potentially damage your PC. __You should know what you're doing__. 
+- https://www.tenforums.com/tutorials/121855-edit-user-system-environment-variables-windows.html
+- https://www.onmsft.com/how-to/how-to-set-an-environment-variable-in-windows-10
 
 
-     
-     
-      
-      
+## Directory Tree 
+```
+├── app 
+│   ├── __init__.py
+│   ├── main.py
+│   ├── model
+│   ├── static
+│   └── templates
+├── config
+│   ├── __init__.py
+├── processing
+│   ├── __init__.py
+├── requirements.txt
+├── runtime.txt
+├── LICENSE
+├── Procfile
+├── README.md
+└── wsgi.py
+```
+
+## Technologies Used
+
+![](https://forthebadge.com/images/badges/made-with-python.svg)
+
+[<img target="_blank" src="https://keras.io/img/logo.png" width=200>](https://keras.io/) [<img target="_blank" src="https://flask.palletsprojects.com/en/1.1.x/_images/streamlit-logo.png" width=170>](https://flask.palletsprojects.com/en/1.1.x/) [<img target="_blank" src="https://number1.co.za/wp-content/uploads/2017/10/gunicorn_logo-300x85.png" width=280>](https://gunicorn.org) [<img target="_blank" src="https://www.kindpng.com/picc/b/301/3012484.png" width=200>](https://aws.amazon.com/s3/) 
+
+[<img target="_blank" src="https://sentry-brand.storage.googleapis.com/sentry-logo-black.png" width=270>](https://www.sentry.io/) [<img target="_blank" src="https://openjsf.org/wp-content/uploads/sites/84/2019/10/jquery-logo-vertical_large_square.png" width=100>](https://jquery.com/)
+
+## License
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+## Credits
+- [Google Images Download](google-images-download) - This project wouldn't have been possible without this tool. It saved my enormous amount of time while collecting the data. A huge shout-out to its creator .
+
+
